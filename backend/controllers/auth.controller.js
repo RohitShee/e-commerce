@@ -67,7 +67,7 @@ export const login = async(req,res)=>{
         const {accessToken,refreshToken} = generateTokens(user._id);
         await storeRefreshToken(user._id, refreshToken);
         setCookies(res,accessToken,refreshToken);
-        res.status(200).json({
+        return res.status(200).json({
                 _id : user._id,
                 name : user.name,
                 email : user.email,
@@ -123,8 +123,8 @@ export const refreshToken = async(req,res)=>{
 
 export const getProfile = async(req,res)=>{
     try {
-        
-    } catch (error) {
-        
-    }
+		return res.json(req.user);
+	} catch (error) {
+		res.status(500).json({ message: "Server error", error: error.message });
+	}
 }
